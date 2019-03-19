@@ -1,0 +1,32 @@
+# Uncomment the next line to define a global platform for your project
+ platform :ios, '9.0'
+
+target 'RNReduxFirebaseBoilerplate' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
+  # pod 'GoogleSignIn' --> Add if using google sign in
+  # Pods for RNReduxFirebaseBoilerplate
+
+  target 'RNReduxFirebaseBoilerplateTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+target 'RNReduxFirebaseBoilerplate-tvOS' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for RNReduxFirebaseBoilerplate-tvOS
+
+  target 'RNReduxFirebaseBoilerplate-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
