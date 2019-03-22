@@ -11,6 +11,8 @@ target 'RNReduxFirebaseBoilerplate' do
   # pod 'GoogleSignIn' --> Add if using google sign in
   # Pods for RNReduxFirebaseBoilerplate
 
+  pod 'RNI18n', :path => '../node_modules/react-native-i18n'
+
   target 'RNReduxFirebaseBoilerplateTests' do
     inherit! :search_paths
     # Pods for testing

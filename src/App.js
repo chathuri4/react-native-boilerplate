@@ -9,38 +9,36 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, StatusBar, ActivityIndicator} from 'react-native';
-import AppNavigator from '../src/navigation/AppNavigator'
+import Router from '../src/navigation/Router'
 import { Provider } from 'react-redux'
+import { ReactReduxFirebaseProvider } from 'react-redux-firebase'
+import { createFirestoreInstance } from 'redux-firestore'
 import configureStore from './store';
+import RNFirebase from 'react-native-firebase';
+import { reduxFirebaseConfig } from './firebase/config'
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+const store = configureStore()
+const firebase = RNFirebase.app()
+
+const rrfProps = {
+  firebase,
+  config: reduxFirebaseConfig,
+  dispatch: store.dispatch,
+  createFirestoreInstance,
+  initializeAuth: true,
+}
 
 class App extends Component<Props> {
-  state = {
-    rehydrated: false
-  }
-
-  store = null
-
-  componentWillMount() {
-    this.store = configureStore(() => {this.setState({rehydrated: true})})
-  }
-
-
 
   render() {
-    return(
-      <Provider store={this.store}>
-        <AppNavigator />
+    return (
+      <Provider store={store}>
+        <ReactReduxFirebaseProvider {...rrfProps}>
+          <Router />
+        </ReactReduxFirebaseProvider>
       </Provider>
     )
   }
 }
-
 
 export default App

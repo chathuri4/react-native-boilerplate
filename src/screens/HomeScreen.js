@@ -7,7 +7,7 @@ import {
 import style from '../styles'
 import { compose } from 'redux';
 import { MonoText } from '../components/StyledText'
-import TodosList from '../components/TodosList'
+// import TodosList from '../components/TodosList'
 import { firebaseConnect, firestoreConnect } from 'react-redux-firebase'
 
 class HomeScreen extends React.Component {
