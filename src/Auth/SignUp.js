@@ -94,7 +94,7 @@ class SignUp extends React.Component {
       return
     }
 
-    firebase.createUser({email, password, signIn: false}, {profile: {firstname, lastname, email}}).then(user => {
+    firebase.createUser({email, password, signIn: false}, {firstname, lastname, email}).then(user => {
       console.log('user', user)
     }).catch(error => {
       this.setState({ loading: false, hasError: error.message})
