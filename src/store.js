@@ -1,8 +1,7 @@
 import { Platform, AsyncStorage } from 'react-native';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { getFirebase, reactReduxFirebase } from 'react-redux-firebase';
-import { reduxFirestore, getFirestore, firestoreReducer } from 'redux-firestore'
-// import RNFirebase from 'react-native-firebase';
+import { reduxFirestore, getFirestore, firestoreReducer } from 'redux-firestore';
 import { persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 import makeRootReducer from './reducers';
@@ -14,13 +13,7 @@ const reactNativeFirebaseConfig = {
 };
 
 
-export default function configureStore(INITIALSTATE = {}) {
-
-  // const firebase = RNFirebase.app();
-
-  //
-  // firebase.initializeApp(firebaseConfig)
-  // firebase.firestore()
+export default function configureStore(onStoreReady) {
 
   const middleware = [
      // make getFirebase available in third argument of thunks
@@ -29,7 +22,7 @@ export default function configureStore(INITIALSTATE = {}) {
 
   const store = createStore(
     makeRootReducer(),
-    INITIALSTATE, // initial state
+    {}, // initial state
     compose(
       // reduxFirestore(firebase), --> not available for the latest react-redux-firebase
       // reactReduxFirebase(firebase, reduxFirebaseConfig), --> not available for the latest react-redux-firebase
@@ -37,11 +30,14 @@ export default function configureStore(INITIALSTATE = {}) {
     )
   )
 
-  // persistStore(
-  //   store,
-  //   null,
-  //   () => {console.log('persist store')}
-  // ).purge().then(() => resolve(store));
+  if (module.hot) {
+    module.hot.accept(() => {
+      store.replaceReducer(require('./reducers').default);
+    });
+  }
+
+  persistStore(store, null, ()=> console.log('store is ready'));
+
 
   console.log('store return')
 

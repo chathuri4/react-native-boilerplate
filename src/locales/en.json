@@ -6,11 +6,13 @@
     "Enter password": "Enter poassword",
     "Forgot Password": "Forgot Password",
     "Do not have an account? Sign Up": "Do not have an account? Sign Up",
+    "Sign Up": "Sign Up",
     "Sign Up with {{appname}}": "Sign Up with {{appname}}",
     "Enter first name": "Enter first name",
     "Enter last name": "Enter last name",
     "Enter email address": "Enter email address",
     "Enter password": "Enter password",
     "Confirm password": "Confirm password",
+    "Already have an account? Sign in": "Already have an account? Sign in",
   },
 }

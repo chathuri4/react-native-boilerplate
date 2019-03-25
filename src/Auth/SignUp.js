@@ -26,7 +26,7 @@ class SignUp extends React.Component {
 
     return (
       <SafeAreaView style={style.container}>
-        <Text style={style.page_header}>{t('Auth.Sign Up with {{appname}}', {appName: 'RN Boilerplate'})}</Text>
+        <Text style={style.page_header}>{t('Auth.Sign Up with {{appname}}', {appname: 'RN Boilerplate'})}</Text>
         <WhiteSpace size="sm" />
         {hasError !== null && hasError !== '' &&
           <View>
@@ -57,10 +57,14 @@ class SignUp extends React.Component {
           placeholder={t('Auth.Enter password')}
           value={password}
           onChange={(text) => this.setState({password: text, hasError: ''})} />
-        <WhiteSpace size="sm" />
-        <Text>{t('Auth.Forgot Password')}</Text>
         <WhiteSpace size="md" />
-        <Button style={style.signin_button} onPress={() => this.onLogin('email')}>Sign in</Button>
+        <InputItem
+          type='password'
+          placeholder={t('Auth.Confirm password')}
+          value={confirm_password}
+          onChange={(text) => this.setState({confirm_password: text, hasError: ''})} />
+        <WhiteSpace size="md" />
+        <Button style={style.signin_button} onPress={() => this.onSignUp()}>{t('Auth.Sign Up')}</Button>
         <WhiteSpace size="lg" />
         <Text>OR</Text>
         {/*Add if using google sign in*/}
@@ -68,12 +72,45 @@ class SignUp extends React.Component {
           <WhiteSpace size="lg" />
         <Button style={style.signin_button} disabled={signinProgress} onPress={() => this.onLogin('google')}>Sign in with Google</Button>*/}
         <WhiteSpace size="lg" />
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('SignupStack')}>
-          <Text>{t('Auth.Do not have an account? Sign Up')}</Text>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('SigninStack')}>
+          <Text>{t('Auth.Already have an account? Sign in')}</Text>
         </TouchableOpacity>
       </SafeAreaView>
     );
   }
+
+  onSignUp = () => {
+
+    const { firebase } = this.props
+    const { firstname, lastname, email, password, confirm_password} = this.state
+
+    if (firstname.isEmpty || lastname.isEmpty || email.isEmpty || password.isEmpty || confirm_password.isEmpty) {
+      this.setState({hasError: 'All fields are required'})
+      return
+    }
+
+    if (password !== confirm_password) {
+      this.setState({hasError: 'Passwords do not match', password: '', confirm_password: ''})
+      return
+    }
+
+    firebase.createUser({email, password, signIn: false}, {profile: {firstname, lastname, email}}).then(user => {
+      console.log('user', user)
+    }).catch(error => {
+      this.setState({ loading: false, hasError: error.message})
+    });
+
+
+  }
 }
 
-export default SignUp;
+
+
+const enhancer = compose(
+  withFirebase,
+  firestoreConnect(),
+  // firebaseConnect(),
+  // connect()
+)
+
+export default enhancer(SignUp);
