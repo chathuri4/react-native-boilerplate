@@ -13,6 +13,10 @@
     "Enter email address": "Enter email address",
     "Enter password": "Enter password",
     "Confirm password": "Confirm password",
+    "Please enter a valid email": "Please enter a valid email",
+    "All fields are required": "All fields are required",
     "Already have an account? Sign in": "Already have an account? Sign in",
+    "Reset Password": "Reset Password",
+    "Reset": "Reset"
   },
 }

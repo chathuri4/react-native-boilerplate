@@ -1,13 +1,12 @@
 import React from 'react';
 import { View, SafeAreaView, Text, TouchableOpacity } from 'react-native'
-import style from '../../styles'
+import style from '../styles'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withFirebase, firebaseConnect, firestoreConnect } from 'react-redux-firebase';
-import { validEmail }  from '../../helpers/Validation'
-// import { GoogleSignin } from 'react-native-google-signin'--> Add if using google sign in
+import { validEmail }  from '../components/form/Validation'
 import { Button, List, InputItem, WhiteSpace, Flex } from '@ant-design/react-native'
-import { t } from '../../locales/i18n';
+import { t } from '../locales/i18n';
 
 
 // GoogleSignin.configure();--> Add if using google sign in
@@ -24,18 +23,17 @@ class SignIn extends React.Component {
 
   render() {
     const { signinProgress, email, password, hasError} = this.state
-    const { authError } = this.props
-    console.log('props', this.props)
+
     return (
       <SafeAreaView style={style.container}>
         <Text style={style.page_header}>{t('Auth.Sign in to access {{appName}}', {appName: 'RN Boilerplate'})}</Text>
-        <WhiteSpace size="sm" />
         {hasError !== null && hasError !== '' &&
-          <View>
+          <View style={{justifyContent: 'center'}}>
             <Text style={style.error}>{hasError}</Text>
             <WhiteSpace size="sm" />
           </View>
         }
+        <WhiteSpace size="sm" />
         <InputItem
           type='email'
           placeholder={t('Auth.Enter email address')}
@@ -49,9 +47,11 @@ class SignIn extends React.Component {
           value={password}
           onChange={(text) => this.setState({password: text, hasError: ''})} />
         <WhiteSpace size="sm" />
-        <Text>{t('Auth.Forgot Password')}</Text>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('ForgotPassStack')}>
+          <Text>{t('Auth.Forgot Password')}</Text>
+        </TouchableOpacity>
         <WhiteSpace size="md" />
-        <Button style={style.signin_button} onPress={() => this.onLogin('email')}>{t('Auth.Sign In')}</Button>
+        <Button style={style.signin_button} onPress={(event) => this.onLogin('email', event)}>{t('Auth.Sign In')}</Button>
         <WhiteSpace size="lg" />
         <Text>OR</Text>
         {/*Add if using google sign in*/}
@@ -66,7 +66,7 @@ class SignIn extends React.Component {
     );
   }
 
-  onLogin = (provider) => {
+  onLogin = (provider, event) => {
     const { firestore, firebase } = this.props
     const { email, password } = this.state
 
@@ -93,8 +93,9 @@ class SignIn extends React.Component {
       // }
       case 'email': {
         console.log('before sign in')
-        if (email && email !== '' && password && password !== '') {
-
+        if (email && validEmail(email)) {
+          this.setState({signinProgress: false, hasError: t('Please enter a valid email')})
+        }else if (email && email !== '' && password && password !== '') {
           firebase.login({email, password}).then((result) => {
             console.log('firebase signin', result, error)
             this.setState({signinProgress: false, signedIn: true}, () => {
@@ -105,10 +106,8 @@ class SignIn extends React.Component {
             console.log('error', error)
             this.setState({signinProgress: false, signedIn: false, hasError: error.message})
           })
-        }else if (validEmail(email)) {
-          this.setState({signinProgress: false, hasError: 'Please enter a valid email'})
         }else {
-          this.setState({signinProgress: false, hasError: 'Please enter email and password'})
+          this.setState({signinProgress: false, hasError: t('All fields are required')})
         }
         break;
       }
@@ -120,8 +119,6 @@ class SignIn extends React.Component {
 const enhancer = compose(
   withFirebase,
   firestoreConnect(),
-  // firebaseConnect(),
-  // connect()
 )
 
 export default enhancer(SignIn);

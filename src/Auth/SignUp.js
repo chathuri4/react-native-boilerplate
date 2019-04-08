@@ -4,7 +4,7 @@ import style from '../styles'
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withFirebase, firebaseConnect, firestoreConnect } from 'react-redux-firebase';
-import { validEmail }  from '../helpers/Validation'
+import { validEmail }  from '../components/form/Validation'
 // import { GoogleSignin } from 'react-native-google-signin'--> Add if using google sign in
 import { Button, List, InputItem, WhiteSpace, Flex, Row, Col } from '@ant-design/react-native'
 import { t } from '../locales/i18n';
@@ -72,7 +72,7 @@ class SignUp extends React.Component {
           <WhiteSpace size="lg" />
         <Button style={style.signin_button} disabled={signinProgress} onPress={() => this.onLogin('google')}>Sign in with Google</Button>*/}
         <WhiteSpace size="lg" />
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('SigninStack')}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('LoginStack')}>
           <Text>{t('Auth.Already have an account? Sign in')}</Text>
         </TouchableOpacity>
       </SafeAreaView>
@@ -83,11 +83,6 @@ class SignUp extends React.Component {
 
     const { firebase } = this.props
     const { firstname, lastname, email, password, confirm_password} = this.state
-
-    if (firstname.isEmpty || lastname.isEmpty || email.isEmpty || password.isEmpty || confirm_password.isEmpty) {
-      this.setState({hasError: 'All fields are required'})
-      return
-    }
 
     if (password !== confirm_password) {
       this.setState({hasError: 'Passwords do not match', password: '', confirm_password: ''})

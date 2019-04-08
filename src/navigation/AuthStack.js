@@ -1,11 +1,13 @@
 import { createStackNavigator } from 'react-navigation';
-import LoginStack from '../Auth/Login/SignIn'
-import SignupStack from '../Auth/SignUp'
+import SignIn from '../Auth/SignIn'
+import SignUp from '../Auth/SignUp'
+import ForgotPassStack from '../Auth/ForgotPassword/'
 
 export default createStackNavigator(
   {
-    LoginStack: LoginStack,
-    SignupStack: SignupStack
+    LoginStack: SignIn,
+    SignupStack: SignUp,
+    ForgotPassStack: ForgotPassStack
   },
   {
     initialRouteName: 'LoginStack',

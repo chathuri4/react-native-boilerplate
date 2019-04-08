@@ -9,7 +9,6 @@ export default AppContainer = (props) => {
   const AppLayout = createAppContainer(createSwitchNavigator(
   {
     Auth: AuthStack,
-    Verify: VerificationStack,
     Main: MainTabNavigator,
   }, {
     initialRouteName: signedIn ? 'Main' : 'Auth'
