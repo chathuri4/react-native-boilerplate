@@ -93,14 +93,16 @@ class SignIn extends React.Component {
       // }
       case 'email': {
         console.log('before sign in')
-        if (email && validEmail(email)) {
+        if (email && !validEmail(email)) {
           this.setState({signinProgress: false, hasError: t('Please enter a valid email')})
         }else if (email && email !== '' && password && password !== '') {
           firebase.login({email, password}).then((result) => {
-            console.log('firebase signin', result, error)
-            this.setState({signinProgress: false, signedIn: true}, () => {
-              this.props.navigation.navigate('Main')
-            })
+            console.log('firebase signin', result)
+            this.props.navigation.navigate('Main')
+
+            // this.setState({signinProgress: false, signedIn: true}, () => {
+            //   this.props.navigation.navigate('Main')
+            // })
           })
           .catch(error => {
             console.log('error', error)

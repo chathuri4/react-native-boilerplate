@@ -16,9 +16,11 @@ import { createFirestoreInstance } from 'redux-firestore'
 import configureStore from './store';
 import RNFirebase from 'react-native-firebase';
 import { reduxFirebaseConfig } from './firebase/config'
+import { PersistGate } from 'redux-persist/es/integration/react';
+import styles from './styles'
 
 
-store = configureStore(() => console.log('store is ready'));
+const { persistor, store } = configureStore((onAuthReady) => this.setState({authReady: true}));
 firebase = RNFirebase.app()
 
 rrfProps = {
@@ -31,38 +33,21 @@ rrfProps = {
 
 class App extends Component<Props> {
 
-  state = {
-    onStore: false,
-    onAuthReady: false
-  }
-
 
   render() {
-    const { onStoreReady } = this.state
 
-    console.log('onstoreready', onStoreReady)
-
-    return (
-      <Provider store={store}>
-        <ReactReduxFirebaseProvider {...rrfProps}>
-          <Router />
-        </ReactReduxFirebaseProvider>
-      </Provider>
-    )
-    
-    if (onStoreReady) {
       return (
         <Provider store={store}>
-          <ReactReduxFirebaseProvider {...rrfProps}>
-            <Router />
-          </ReactReduxFirebaseProvider>
+          <PersistGate
+            loading={<ActivityIndicator />}
+            persistor={persistor}>
+            <ReactReduxFirebaseProvider {...rrfProps}>
+              <Router />
+            </ReactReduxFirebaseProvider>
+          </PersistGate>
         </Provider>
       )
-    }
 
-    return (
-      <View style={{flex: 1}}><ActivityIndicator /></View>
-    )
   }
 }
 

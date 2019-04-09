@@ -28,35 +28,29 @@ class Router extends Component {
 
 //Written to handle component update, only when isLoaded and isEmpty parameters changes.
 //Else on each firebase.login() (even if failed) the component will re-render
-  shouldComponentUpdate(nextProps) {
-    const { auth: {isLoaded, isEmpty} } = nextProps
-
-    return isLoaded !== this.props.auth.isLoaded ? true : isLoaded && isEmpty !== this.props.auth.isEmpty
-  }
-
+  // shouldComponentUpdate(nextProps) {
+  //   const { auth: {isLoaded, isEmpty} } = nextProps
+  //
+  //   return isLoaded !== this.props.auth.isLoaded ? true : isLoaded && isEmpty !== this.props.auth.isEmpty
+  // }
+  //
+  // componentDidUpdate(prevProps) {
+  //
+  //   console.log('props', prevProps, this.props)
+  //   // if (prevProps.auth.isEmpty !== this.props.auth.isEmpty) {
+  //   //     if (!this.props.auth.isEmpty) {
+  //   //       this.props.navigation.navigate('Main')
+  //   //     }
+  //   // }
+  // }
 
   render() {
 
-    console.log('render')
-    const { auth: {isLoaded, isEmpty}} = this.props
-
-    if (isLoaded) {
-      return <AppContainer signedIn={!isEmpty}/>
-    }
-
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator />
-      </View>
-    )
+    return <AppContainer />
 
   }
 }
 
-const enhancer = compose(
-  connect((state) => ({
-    auth: state.firebase.auth
-  }))
-);
 
-export default enhancer(Router)
+
+export default Router

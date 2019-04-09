@@ -27,7 +27,7 @@ class HomeScreen extends React.Component {
   onLogout = () => {
     this.props.firebase.logout().then(result => {
       console.log('logged out')
-      this.props.navigation.navigate('Login')
+      this.props.navigation.navigate('Auth')
     })
   }
 }

@@ -14,14 +14,14 @@ import { isLoaded, isEmpty, firebaseConnect } from 'react-redux-firebase'
 class AuthLoading extends React.Component {
 
   componentDidUpdate(prevProps) {
-    const { auth } = this.props
+    const { auth: {isLoaded, isEmpty} } = this.props
+    console.log('component did update', this.props)
+    console.log(this.props, prevProps.auth)
 
-    console.log(auth, prevProps.auth)
-
-    if (prevProps.auth !== auth) {
-      if (isLoaded(auth)) {
-        if (isEmpty(auth)) {
-          this.props.navigation.navigate('Login')
+    if (prevProps.auth !== this.props.auth) {
+      if (isLoaded) {
+        if (isEmpty) {
+          this.props.navigation.navigate('Auth')
         }else {
           this.props.navigation.navigate('Main')
         }
@@ -40,10 +40,9 @@ class AuthLoading extends React.Component {
 }
 
 const enhancer = compose(
-  firebaseConnect(),
   connect((state) => ({
     auth: state.firebase.auth
-  })
-));
+  }))
+);
 
 export default enhancer(AuthLoading)
